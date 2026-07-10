@@ -424,14 +424,22 @@
 
     <script>
         function switchPage(pageId) {
-            document.querySelectorAll('.page-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.nav-links a').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.page-content').forEach(el => {
+                el.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-links a').forEach(el => {
+                el.classList.remove('active');
+            });
             
-            const targetPage = document.getElementById('page-' + pageId);
-            if (targetPage) targetPage.classList.add('active');
+            const targetPage = document.getElementById('page-'.concat(pageId));
+            if (targetPage) {
+                targetPage.classList.add('active');
+            }
             
-            const targetNav = document.getElementById('nav-' + pageId);
-            if (targetNav) targetNav.classList.add('active');
+            const targetNav = document.getElementById('nav-'.concat(pageId));
+            if (targetNav) {
+                targetNav.classList.add('active');
+            }
             
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
