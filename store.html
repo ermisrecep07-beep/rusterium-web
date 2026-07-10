@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rust Server - Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav>
+        <div class="logo">
+            <i class="fa-solid fa-radiation"></i> RUST<span>2026</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="rules.html">Rules</a></li>
+            <li><a href="store.html" class="active">Store</a></li>
+            <li><a href="leaderboard.html">Leaderboard</a></li>
+            <li><a href="#support">Support</a></li>
+        </ul>
+        <a href="steam://connect/SERVER_IP:PORT" class="btn-connect">
+            <i class="fa-solid fa-gamepad"></i> Connect Server
+        </a>
+    </nav>
+
+    <div class="container">
+        <div class="glass-card" style="margin-bottom: 30px; text-align: center;">
+            <h2 style="font-size: 2.2rem; margin-bottom: 10px;"><i class="fa-solid fa-store" style="color: var(--primary);"></i> VIP & <span>Packages</span></h2>
+            <p style="color: var(--text-muted);">Support the server and unlock exclusive perks instantly delivered via RCON.</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card" style="text-align: center;">
+                <i class="fa-solid fa-crown" style="font-size: 2.5rem; color: #eab308;"></i>
+                <h3 style="margin-top: 15px;">VIP Rank</h3>
+                <p style="margin: 15px 0;">Skinbox access, priority queue, 10% faster craft and extra homes.</p>
+                <span style="font-family: 'JetBrains Mono'; font-weight: 700; font-size: 1.3rem; color: var(--primary); display: block; margin-bottom: 20px;">$9.99 / mo</span>
+                <a href="#" class="btn-connect" style="justify-content: center;">Purchase</a>
+            </div>
+            <div class="feature-card" style="text-align: center;">
+                <i class="fa-solid fa-gem" style="font-size: 2.5rem; color: #3b82f6;"></i>
+                <h3 style="margin-top: 15px;">VIP+ Rank</h3>
+                <p style="margin: 15px 0;">All VIP perks plus larger skinbox, remote recycler and extra teleport options.</p>
+                <span style="font-family: 'JetBrains Mono'; font-weight: 700; font-size: 1.3rem; color: var(--primary); display: block; margin-bottom: 20px;">$19.99 / mo</span>
+                <a href="#" class="btn-connect" style="justify-content: center;">Purchase</a>
+            </div>
+            <div class="feature-card" style="text-align: center;">
+                <i class="fa-solid fa-box-open" style="font-size: 2.5rem; color: var(--primary);"></i>
+                <h3 style="margin-top: 15px;">Mystery Box</h3>
+                <p style="margin: 15px 0;">Chance to win rare weapon skins, high tier components or a free VIP package.</p>
+                <span style="font-family: 'JetBrains Mono'; font-weight: 700; font-size: 1.3rem; color: var(--primary); display: block; margin-bottom: 20px;">$2.99</span>
+                <a href="#" class="btn-connect" style="justify-content: center;">Purchase</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
