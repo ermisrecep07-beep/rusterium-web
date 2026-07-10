@@ -1,11 +1,8 @@
-// İleride canlı oyuncu sayısı çekmek ya da animasyonlar eklemek için kullanabileceğin alan
-console.log("Rust 2026 Web Arayüzü Yüklendi!");
+console.log("Rust 2026 Web Interface Successfully Loaded!");
 
-// Örnek: Sayfa yüklendiğinde konsola bilgi basma veya dinamik işlemler
 document.addEventListener("DOMContentLoaded", () => {
     const playerCountElement = document.getElementById("player-count");
     
-    // İleride buraya BattleMetrics API isteği yazabilirsin
-    // Örnek simülasyon:
-    // playerCountElement.innerText = "132 / 150";
+    // Future API integrations (e.g. BattleMetrics) can be placed here
+    // Example: playerCountElement.innerText = "132 / 150";
 });
