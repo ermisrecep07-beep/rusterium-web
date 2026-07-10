@@ -1,182 +1,339 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rust Server - 2026 Edition</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-color: #0b0f12;
+            --primary: #f2643a; /* Rust Turuncusu */
+            --primary-glow: rgba(242, 100, 58, 0.3);
+            --glass-bg: rgba(18, 24, 30, 0.45);
+            --glass-border: rgba(255, 255, 255, 0.07);
+            --text-main: #f0f4f8;
+            --text-muted: #8b9bb4;
+        }
 
-<title>RUSTERIUM | EU 2X VANILLA</title>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<link rel="stylesheet" href="style.css">
+        body {
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 20% 20%, rgba(242, 100, 58, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(30, 144, 255, 0.04) 0%, transparent 40%),
+                url('https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2070&auto=format&fit=crop'); /* Atmosferik Arkaplan */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: var(--text-main);
+            font-family: 'Outfit', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+        /* Navbar */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 8%;
+            background: rgba(11, 15, 18, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
 
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo span {
+            color: var(--primary);
+            text-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 600;
+            transition: color 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--primary);
+        }
+
+        .btn-connect {
+            background: var(--primary);
+            color: #fff;
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-weight: 700;
+            text-decoration: none;
+            box-shadow: 0 0 20px var(--primary-glow);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-connect:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(242, 100, 58, 0.6);
+        }
+
+        /* Main Container / Hero */
+        .container {
+            max-width: 1200px;
+            margin: 140px auto 60px auto;
+            padding: 0 20px;
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 40px;
+            align-items: center;
+            margin-bottom: 60px;
+        }
+
+        /* Glass Card Component */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        .hero-content h1 span {
+            color: var(--primary);
+        }
+
+        .hero-content p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        /* Server Status Box */
+        .server-status-box {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .status-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        .live-indicator {
+            width: 8px;
+            height: 8px;
+            background-color: #22c55e;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #22c55e;
+            display: inline-block;
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .feature-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            border-color: rgba(242, 100, 58, 0.3);
+            transform: translateY(-5px);
+        }
+
+        .feature-card i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .hero {
+                grid-template-columns: 1fr;
+            }
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
 </head>
-
 <body>
 
-
-<div class="hero">
-
-    <video autoplay muted loop playsinline class="bg-video">
-        <source src="background.mp4" type="video/mp4">
-    </video>
-
-    <div class="overlay"></div>
-
-
+    <!-- Navigasyon -->
     <nav>
-
         <div class="logo">
-            RUSTERIUM
+            <i class="fa-solid fa-radiation"></i> RUST<span>2026</span>
         </div>
-
-
-        <div class="links">
-
-            <a href="#">Servers</a>
-            <a href="#">Rules</a>
-            <a href="#">Discord</a>
-
-        </div>
-
+        <ul class="nav-links">
+            <li><a href="#" class="active">Ana Sayfa</a></li>
+            <li><a href="#">Kurallar</a></li>
+            <li><a href="#">Mağaza</a></li>
+            <li><a href="#">Sıralama</a></li>
+            <li><a href="#">Destek</a></li>
+        </ul>
+        <a href="steam://connect/IP_ADRESI:PORT" class="btn-connect">
+            <i class="fa-solid fa-gamepad"></i> Sunucuya Bağlan
+        </a>
     </nav>
 
+    <!-- İçerik Alanı -->
+    <div class="container">
+        
+        <!-- Hero Bölümü -->
+        <div class="hero">
+            <div class="glass-card hero-content">
+                <h1>HAYATTA KALMA <span>YENİDEN TANIMLANDI.</span></h1>
+                <p>En gelişmiş eklentiler, adil oyun mekanikleri, aktif yönetim ekibi ve optimize edilmiş yüksek FPS haritalarımızla Rust deneyimini en zirvede yaşayın. Ekibini kur, adayı ele geçir.</p>
+                <a href="steam://connect/IP_ADRESI:PORT" class="btn-connect" style="display: inline-flex;">
+                    <i class="fa-solid fa-bolt"></i> HEMEN OYUNA GİR (F1 Console)
+                </a>
+            </div>
 
-
-    <div class="hero-content">
-
-        <div class="badge">
-            🟢 SERVER ONLINE
+            <!-- Canlı Sunucu Durumu Kartı -->
+            <div class="glass-card server-status-box">
+                <div class="status-item">
+                    <span class="status-label"><span class="live-indicator"></span> Sunucu Durumu</span>
+                    <span class="status-value" style="color: #22c55e;">ÇEVRİMİÇİ</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label"><i class="fa-solid fa-users"></i> Aktif Oyuncu</span>
+                    <span class="status-value">124 / 150</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label"><i class="fa-solid fa-map"></i> Harita Boyutu</span>
+                    <span class="status-value">4200 (Procedural)</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label"><i class="fa-solid fa-clock-rotate-left"></i> Son Wipe</span>
+                    <span class="status-value">Dün, 20:00</span>
+                </div>
+            </div>
         </div>
 
-
-        <h1>
-            RUSTERIUM
-        </h1>
-
-
-        <h2>
-            EU 2X VANILLA SURVIVAL
-        </h2>
-
-
-        <p>
-            A modern Rust survival experience.
-            Fair gameplay. Active community.
-        </p>
-
-
-        <div class="buttons">
-
-            <a class="primary">
-                PLAY NOW
-            </a>
-
-
-            <a class="secondary">
-                DISCORD
-            </a>
-
+        <!-- Özellikler Izgarası -->
+        <div class="features-grid">
+            <div class="feature-card">
+                <i class="fa-solid fa-shield-halved"></i>
+                <h3>Gelişmiş Hile Koruması</h3>
+                <p>Sektörün en iyi anti-cheat entegrasyonu ile tamamen adil ve huzurlu bir rekabet ortamı sağlıyoruz.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fa-solid fa-gauge-high"></i>
+                <h3>Yüksek Performans</h3>
+                <p>Özel yapılandırılmış VDS sunucular sayesinde düşük ping ve maksimum akıcı FPS değerleri.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fa-solid fa-scale-balanced"></i>
+                <h3>Özel Dengeli Modlar</h3>
+                <p>Oyun zevkini bölmeyen, aşırıya kaçmayan optimized rate ayarları ve özel etkinlikler.</p>
+            </div>
         </div>
-
 
     </div>
-
-
-</div>
-
-
-
-<section class="servers">
-
-
-<h2>OUR SERVER</h2>
-
-
-<div class="server-card">
-
-
-<div>
-
-<h3>
-RUSTERIUM #1
-</h3>
-
-<span>
-EU • 2X VANILLA
-</span>
-
-</div>
-
-
-
-<div class="stats">
-
-<div>
-<strong>0/80</strong>
-<small>Players</small>
-</div>
-
-
-<div>
-<strong>3500</strong>
-<small>Map Size</small>
-</div>
-
-
-<div>
-<strong>14 Days</strong>
-<small>Wipe</small>
-</div>
-
-
-</div>
-
-
-<button>
-CONNECT
-</button>
-
-
-</div>
-
-
-</section>
-
-
-
-<section class="features">
-
-
-<div>
-<h3>⚔ Balanced</h3>
-<p>No unfair advantages.</p>
-</div>
-
-
-<div>
-<h3>🛡 Protected</h3>
-<p>Active administration.</p>
-</div>
-
-
-<div>
-<h3>🌍 Community</h3>
-<p>Built for players.</p>
-</div>
-
-
-</section>
-
-
-
-<footer>
-
-RUSTERIUM © 2026
-
-</footer>
-
 
 </body>
 </html>
