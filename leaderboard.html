@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rust Server - Leaderboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav>
+        <div class="logo">
+            <i class="fa-solid fa-radiation"></i> RUST<span>2026</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="rules.html">Rules</a></li>
+            <li><a href="store.html">Store</a></li>
+            <li><a href="leaderboard.html" class="active">Leaderboard</a></li>
+            <li><a href="#support">Support</a></li>
+        </ul>
+        <a href="steam://connect/SERVER_IP:PORT" class="btn-connect">
+            <i class="fa-solid fa-gamepad"></i> Connect Server
+        </a>
+    </nav>
+
+    <div class="container">
+        <div class="glass-card" style="margin-bottom: 30px;">
+            <h2 style="font-size: 2rem; margin-bottom: 10px;"><i class="fa-solid fa-trophy" style="color: #eab308;"></i> Top <span>Survivors</span></h2>
+            <p style="color: var(--text-muted);">Weekly updated rankings of the best players based on combat and survival score.</p>
+        </div>
+
+        <div class="glass-card server-status-box">
+            <div class="status-item" style="font-weight: 800; color: var(--primary);">
+                <span>Rank & Player</span>
+                <span>Kills / Deaths</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label"><i class="fa-solid fa-medal" style="color: #eab308;"></i> #1 - GhostRider</span>
+                <span class="status-value">342 / 45</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label"><i class="fa-solid fa-medal" style="color: #94a3b8;"></i> #2 - RustLord07</span>
+                <span class="status-value">289 / 60</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label"><i class="fa-solid fa-medal" style="color: #b45309;"></i> #3 - SavageBeast</span>
+                <span class="status-value">210 / 52</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
