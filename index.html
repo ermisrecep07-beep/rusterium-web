@@ -6,20 +6,277 @@
     <title>Rust Server - 2026 Edition</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        :root {
+            --bg-color: #0b0f12;
+            --primary: #f2643a;
+            --primary-glow: rgba(242, 100, 58, 0.3);
+            --glass-bg: rgba(18, 24, 30, 0.45);
+            --glass-border: rgba(255, 255, 255, 0.07);
+            --text-main: #f0f4f8;
+            --text-muted: #8b9bb4;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 20% 20%, rgba(242, 100, 58, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(30, 144, 255, 0.04) 0%, transparent 40%),
+                url('https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: var(--text-main);
+            font-family: 'Outfit', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Navbar */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 8%;
+            background: rgba(11, 15, 18, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .logo span {
+            color: var(--primary);
+            text-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 600;
+            transition: color 0.3s ease;
+            font-size: 0.95rem;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--primary);
+        }
+
+        .btn-connect {
+            background: var(--primary);
+            color: #fff;
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-weight: 700;
+            text-decoration: none;
+            box-shadow: 0 0 20px var(--primary-glow);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-connect:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(242, 100, 58, 0.6);
+        }
+
+        /* Container & Pages */
+        .container {
+            max-width: 1200px;
+            margin: 140px auto 60px auto;
+            padding: 0 20px;
+        }
+
+        .page-content {
+            display: none;
+        }
+
+        .page-content.active {
+            display: block;
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 40px;
+            align-items: center;
+            margin-bottom: 60px;
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        .hero-content h1 span {
+            color: var(--primary);
+        }
+
+        .hero-content p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .server-status-box {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .status-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        .live-indicator {
+            width: 8px;
+            height: 8px;
+            background-color: #22c55e;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #22c55e;
+            display: inline-block;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .feature-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            border-color: rgba(242, 100, 58, 0.3);
+            transform: translateY(-5px);
+        }
+
+        .feature-card i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 900px) {
+            .hero {
+                grid-template-columns: 1fr;
+            }
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
 </head>
 <body>
 
     <nav>
-        <div class="logo">
+        <div class="logo" onclick="switchPage('home')">
             <i class="fa-solid fa-radiation"></i> RUST<span>2026</span>
         </div>
         <ul class="nav-links">
-            <li><a href="index.html" class="active">Home</a></li>
-            <li><a href="rules.html">Rules</a></li>
-            <li><a href="store.html">Store</a></li>
-            <li><a href="leaderboard.html">Leaderboard</a></li>
-            <li><a href="#support">Support</a></li>
+            <li><a id="nav-home" class="active" onclick="switchPage('home')">Home</a></li>
+            <li><a id="nav-rules" onclick="switchPage('rules')">Rules</a></li>
+            <li><a id="nav-store" onclick="switchPage('store')">Store</a></li>
+            <li><a id="nav-leaderboard" onclick="switchPage('leaderboard')">Leaderboard</a></li>
+            <li><a id="nav-support" onclick="switchPage('support')">Support</a></li>
         </ul>
         <a href="steam://connect/SERVER_IP:PORT" class="btn-connect">
             <i class="fa-solid fa-gamepad"></i> Connect Server
@@ -27,54 +284,157 @@
     </nav>
 
     <div class="container">
-        <div class="hero">
-            <div class="glass-card hero-content">
-                <h1>SURVIVAL <span>REDEFINED.</span></h1>
-                <p>Experience Rust at its absolute peak with advanced custom plugins, fair gameplay mechanics, an active staff team, and optimized high-FPS maps. Build your clan, conquer the island.</p>
-                <a href="steam://connect/SERVER_IP:PORT" class="btn-connect" style="display: inline-flex;">
-                    <i class="fa-solid fa-bolt"></i> JOIN NOW (F1 Console)
+        
+        <div id="page-home" class="page-content active">
+            <div class="hero">
+                <div class="glass-card hero-content">
+                    <h1>SURVIVAL <span>REDEFINED.</span></h1>
+                    <p>Experience Rust at its absolute peak with advanced custom plugins, fair gameplay mechanics, an active staff team, and optimized high-FPS maps. Build your clan, conquer the island.</p>
+                    <a href="steam://connect/SERVER_IP:PORT" class="btn-connect" style="display: inline-flex;">
+                        <i class="fa-solid fa-bolt"></i> JOIN NOW (F1 Console)
+                    </a>
+                </div>
+
+                <div class="glass-card server-status-box">
+                    <div class="status-item">
+                        <span class="status-label"><span class="live-indicator"></span> Server Status</span>
+                        <span class="status-value" style="color: #22c55e;">ONLINE</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label"><i class="fa-solid fa-users"></i> Active Players</span>
+                        <span id="player-count" class="status-value">124 / 150</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label"><i class="fa-solid fa-map"></i> Map Size</span>
+                        <span class="status-value">4200 (Procedural)</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label"><i class="fa-solid fa-clock-rotate-left"></i> Last Wipe</span>
+                        <span class="status-value">Yesterday, 8:00 PM</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <h3>Advanced Anti-Cheat</h3>
+                    <p>Equipped with top-tier anti-cheat integration ensuring a completely fair and secure competitive environment.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fa-solid fa-gauge-high"></i>
+                    <h3>High Performance</h3>
+                    <p>Custom-configured dedicated hardware delivering ultra-low ping and maximum fluent FPS rates.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fa-solid fa-scale-balanced"></i>
+                    <h3>Balanced Gameplay</h3>
+                    <p>Carefully tuned rates and custom periodic events designed to enhance raw survival excitement.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="page-rules" class="page-content">
+            <div class="glass-card" style="margin-bottom: 30px;">
+                <h2 style="font-size: 2rem; margin-bottom: 10px;"><i class="fa-solid fa-book-skull" style="color: var(--primary);"></i> Server <span>Rules</span></h2>
+                <p style="color: var(--text-muted);">Please read all rules carefully before playing on our server. Ignorance of rules is not an excuse.</p>
+            </div>
+            <div class="features-grid" style="grid-template-columns: 1fr; gap: 20px;">
+                <div class="feature-card">
+                    <h3>01. Maximum Team Limit</h3>
+                    <p>The max team limit on this server is 3 players. Alliances, shared bases, or roaming together in groups larger than 3 is strictly prohibited.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>02. Cheating & Exploits</h3>
+                    <p>Any usage of third-party software, hacks, macros, game file modifications, or exploiting unintended game bugs leads to an immediate permanent ban.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>03. Chat & Behavior</h3>
+                    <p>Harassment, hate speech, spamming chat, or excessive toxicity towards other players or staff members will result in mutes or bans.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="page-store" class="page-content">
+            <div class="glass-card" style="margin-bottom: 30px; text-align: center;">
+                <h2 style="font-size: 2.2rem; margin-bottom: 10px;"><i class="fa-solid fa-store" style="color: var(--primary);"></i> VIP & <span>Packages</span></h2>
+                <p style="color: var(--text-muted);">Support the server and unlock exclusive perks instantly delivered via RCON.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card" style="text-align: center;">
+                    <i class="fa-solid fa-crown" style="font-size: 2.5rem; color: #eab308;"></i>
+                    <h3 style="margin-top: 15px;">VIP Rank</h3>
+                    <p style="margin: 15px 0;">Skinbox access, priority queue, 10% faster craft and extra homes.</p>
+                    <span style="font-family: 'JetBrains Mono'; font-weight: 700; font-size: 1.3rem; color: var(--primary); display: block; margin-bottom: 20px;">$9.99 / mo</span>
+                    <a href="#" class="btn-connect" style="justify-content: center;">Purchase</a>
+                </div>
+                <div class="feature-card" style="text-align: center;">
+                    <i class="fa-solid fa-gem" style="font-size: 2.5rem; color: #3b82f6;"></i>
+                    <h3 style="margin-top: 15px;">VIP+ Rank</h3>
+                    <p style="margin: 15px 0;">All VIP perks plus larger skinbox, remote recycler and extra teleport options.</p>
+                    <span style="font-family: 'JetBrains Mono'; font-weight: 700; font-size: 1.3rem; color: var(--primary); display: block; margin-bottom: 20px;">$19.99 / mo</span>
+                    <a href="#" class="btn-connect" style="justify-content: center;">Purchase</a>
+                </div>
+                <div class="feature-card" style="text-align: center;">
+                    <i class="fa-solid fa-box-open" style="font-size: 2.5rem; color: var(--primary);"></i>
+                    <h3 style="margin-top: 15px;">Mystery Box</h3>
+                    <p style="margin: 15px 0;">Chance to win rare weapon skins, high tier components or a free VIP package.</p>
+                    <span style="font-family: 'JetBrains Mono'; font-weight: 700; font-size: 1.3rem; color: var(--primary); display: block; margin-bottom: 20px;">$2.99</span>
+                    <a href="#" class="btn-connect" style="justify-content: center;">Purchase</a>
+                </div>
+            </div>
+        </div>
+
+        <div id="page-leaderboard" class="page-content">
+            <div class="glass-card" style="margin-bottom: 30px;">
+                <h2 style="font-size: 2rem; margin-bottom: 10px;"><i class="fa-solid fa-trophy" style="color: #eab308;"></i> Top <span>Survivors</span></h2>
+                <p style="color: var(--text-muted);">Weekly updated rankings of the best players based on combat and survival score.</p>
+            </div>
+            <div class="glass-card server-status-box">
+                <div class="status-item" style="font-weight: 800; color: var(--primary);">
+                    <span>Rank & Player</span>
+                    <span>Kills / Deaths</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label"><i class="fa-solid fa-medal" style="color: #eab308;"></i> #1 - GhostRider</span>
+                    <span class="status-value">342 / 45</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label"><i class="fa-solid fa-medal" style="color: #94a3b8;"></i> #2 - RustLord07</span>
+                    <span class="status-value">289 / 60</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label"><i class="fa-solid fa-medal" style="color: #b45309;"></i> #3 - SavageBeast</span>
+                    <span class="status-value">210 / 52</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="page-support" class="page-content">
+            <div class="glass-card">
+                <h2><i class="fa-solid fa-headset" style="color: var(--primary);"></i> Support <span>Center</span></h2>
+                <p style="color: var(--text-muted); margin-top: 15px;">Need help with a purchase or want to report a player? Join our Discord server to open a ticket instantly.</p>
+                <a href="#" class="btn-connect" style="display: inline-flex; margin-top: 25px;">
+                    <i class="fa-brands fa-discord"></i> Join Discord
                 </a>
             </div>
-
-            <div class="glass-card server-status-box">
-                <div class="status-item">
-                    <span class="status-label"><span class="live-indicator"></span> Server Status</span>
-                    <span class="status-value" style="color: #22c55e;">ONLINE</span>
-                </div>
-                <div class="status-item">
-                    <span class="status-label"><i class="fa-solid fa-users"></i> Active Players</span>
-                    <span id="player-count" class="status-value">124 / 150</span>
-                </div>
-                <div class="status-item">
-                    <span class="status-label"><i class="fa-solid fa-map"></i> Map Size</span>
-                    <span class="status-value">4200 (Procedural)</span>
-                </div>
-                <div class="status-item">
-                    <span class="status-label"><i class="fa-solid fa-clock-rotate-left"></i> Last Wipe</span>
-                    <span class="status-value">Yesterday, 8:00 PM</span>
-                </div>
-            </div>
         </div>
 
-        <div class="features-grid">
-            <div class="feature-card">
-                <i class="fa-solid fa-shield-halved"></i>
-                <h3>Advanced Anti-Cheat</h3>
-                <p>Equipped with top-tier anti-cheat integration ensuring a completely fair and secure competitive environment.</p>
-            </div>
-            <div class="feature-card">
-                <i class="fa-solid fa-gauge-high"></i>
-                <h3>High Performance</h3>
-                <p>Custom-configured dedicated hardware delivering ultra-low ping and maximum fluent FPS rates.</p>
-            </div>
-            <div class="feature-card">
-                <i class="fa-solid fa-scale-balanced"></i>
-                <h3>Balanced Gameplay</h3>
-                <p>Carefully tuned rates and custom periodic events designed to enhance raw survival excitement.</p>
-            </div>
-        </div>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        function switchPage(pageId) {
+            document.querySelectorAll('.page-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-links a').forEach(el => el.classList.remove('active'));
+            
+            const targetPage = document.getElementById('page-' + pageId);
+            if (targetPage) targetPage.classList.add('active');
+            
+            const targetNav = document.getElementById('nav-' + pageId);
+            if (targetNav) targetNav.classList.add('active');
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>
