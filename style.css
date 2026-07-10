@@ -1,6 +1,6 @@
 :root {
     --bg-color: #0b0f12;
-    --primary: #f2643a; /* Rust Orange */
+    --primary: #f2643a;
     --primary-glow: rgba(242, 100, 58, 0.3);
     --glass-bg: rgba(18, 24, 30, 0.45);
     --glass-border: rgba(255, 255, 255, 0.07);
@@ -29,7 +29,6 @@ body {
     overflow-x: hidden;
 }
 
-/* Navbar */
 nav {
     display: flex;
     justify-content: space-between;
@@ -98,7 +97,6 @@ nav {
     box-shadow: 0 0 30px rgba(242, 100, 58, 0.6);
 }
 
-/* Main Container / Hero */
 .container {
     max-width: 1200px;
     margin: 140px auto 60px auto;
@@ -113,7 +111,6 @@ nav {
     margin-bottom: 60px;
 }
 
-/* Glass Card Component */
 .glass-card {
     background: var(--glass-bg);
     backdrop-filter: blur(24px);
@@ -155,7 +152,6 @@ nav {
     margin-bottom: 30px;
 }
 
-/* Server Status Box */
 .server-status-box {
     display: flex;
     flex-direction: column;
@@ -195,7 +191,6 @@ nav {
     display: inline-block;
 }
 
-/* Features Grid */
 .features-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -206,7 +201,7 @@ nav {
     background: var(--glass-bg);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border: 1px solid var(--glass-border);
+    border: 1: solid var(--glass-border);
     border-radius: 12px;
     padding: 30px;
     transition: all 0.3s ease;
@@ -235,7 +230,6 @@ nav {
     line-height: 1.5;
 }
 
-/* Responsive */
 @media (max-width: 900px) {
     .hero {
         grid-template-columns: 1fr;
